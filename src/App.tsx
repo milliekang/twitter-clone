@@ -6,6 +6,8 @@ import Login from "./routes/login"
 import CreateAccount from "./routes/create-account"
 import { createGlobalStyle } from "styled-components"
 import reset from "styled-reset"
+import { useEffect, useState } from "react"
+import LoadingScreen from "./components/loading-screen"
 
 const router = createBrowserRouter([
   {path: "/",
@@ -43,10 +45,15 @@ body{
 `
 
 function App() {
-
+  const [isLoading, setIsLoading] = useState(true);
+  const init = async () => {
+    setIsLoading(false);
+    // setTimeout(() => setIsLoading(false), 2000)
+  }
+  useEffect(()=>{init()}, [])
   return <>
   <GolbalStyles />
-  <RouterProvider router={router} />
+  {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
   </>
 }
 
