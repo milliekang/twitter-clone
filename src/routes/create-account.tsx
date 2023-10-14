@@ -1,5 +1,8 @@
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import styled from "styled-components"
+import { auth } from "./firebase";
+import { useNavigate } from "react-router-dom";
 
 
 const Wrapper = styled.div`
@@ -42,7 +45,7 @@ color:red;
 `
 
 export default function CreateAccount(){
-
+  const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -61,10 +64,18 @@ export default function CreateAccount(){
     }
   }
 
-  const onSubmit = (e:React.FormEvent<HTMLFormElement>) =>{
+  const onSubmit = async (e:React.FormEvent<HTMLFormElement>) =>{
     e.preventDefault();
     console.log(name, email, password);
-    try{}catch(e){}finally{}
+    if(name == "" || password =="" || email == "") return;
+    try{
+      const credential = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(credential.user);
+      await updateProfile(credential.user, {
+        displayName: name,
+      })
+      navigate("/")
+    }catch(e){}finally{setLoading(false)}
   }
 
   return <Wrapper>
@@ -77,4 +88,4 @@ export default function CreateAccount(){
     </Form>
     {error !== "" ? <Error>{error}</Error>:''}
   </Wrapper>
-}
+}  
