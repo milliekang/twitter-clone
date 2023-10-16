@@ -4,6 +4,7 @@ import { auth } from "./firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { Error, Form, Input, Switcher, Title, Wrapper } from "../components/auth-component";
+import GithubButton from "../components/github_button";
 
 
 
@@ -54,7 +55,7 @@ export default function CreateAccount(){
   }
 
   return <Wrapper>
-    <Title>Create Account with Twitter</Title> 
+    <Title>Join with Twitter</Title> 
     <Form onSubmit={onSubmit}>
       <Input onChange={onChange} name="name" placeholder="name" value={name} type="text" required />
       <Input onChange={onChange} name="email" placeholder="email" value={email} type="email" required/>
@@ -63,5 +64,6 @@ export default function CreateAccount(){
     </Form>
     {error !== "" ? <Error>{error}</Error>:''}
     <Switcher>Already have an account? <Link to="/login">login</Link></Switcher>
+    <GithubButton />
   </Wrapper>
 }  
