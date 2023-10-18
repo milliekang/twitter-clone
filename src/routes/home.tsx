@@ -4,5 +4,5 @@ export default function Home(){
   const logout = () => {
     auth.signOut()
   }
-  return <h1><button onClick={logout}>Log Out</button></h1>
+  return <h1></h1>
 }
