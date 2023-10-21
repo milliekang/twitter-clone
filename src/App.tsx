@@ -39,6 +39,7 @@ const GolbalStyles = createGlobalStyle`
 ${reset};
 *{
   box-sizing: border-box;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 body{
   background-color: black;
