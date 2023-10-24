@@ -93,7 +93,7 @@ export default function PostTweetForm(){
         //   return alert("upload photo only");
         // }
         else{
-          const locationRef = ref(storage, `tweets/${user.uid}_${user.displayName}/${doc.id}`);
+          const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
           const result = await uploadBytes(locationRef, file);
           const imageUrl = await getDownloadURL(result.ref);
           await updateDoc(doc, {
