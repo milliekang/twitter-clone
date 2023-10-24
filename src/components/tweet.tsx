@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, database, storage } from "../routes/firebase";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
+import { useState } from "react";
 
 const Wrapper = styled.div`
 display: grid;
@@ -43,8 +44,60 @@ box-shadow: none;
 border: none;
 `;
 
+const EditButton = styled.button`
+background-color: blueviolet;
+color: white;
+font-weight: 600;
+font-size: 12px;
+padding: 5px 10px;
+text-transform: uppercase;
+border-radius: 5px;
+box-shadow: none;
+border: none;
+`;
+
+const ConfirmButton = styled.button`
+background-color: green;
+color: white;
+font-weight: 600;
+font-size: 12px;
+padding: 5px 10px;
+text-transform: uppercase;
+border-radius: 5px;
+box-shadow: none;
+border: none;
+`;
+
+const Form = styled.form``;
+
+
+const EditText = styled.textarea``;
+
 export default function Tweet({username, image, tweet, userId, id}:ITweet){
+  const [editing, isEditing] = useState(false);
+  const [text, setText] = useState(tweet)
   const user = auth.currentUser;
+  const onChange = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
+    setText(e.target.value);
+  }
+  const onEdit = async() => {
+    try {
+      isEditing(true);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const onConfirm = async() => {
+    try {
+      updateDoc(doc(database, "tweets", id), {
+        tweet: text,
+      });
+      isEditing(false)
+    } catch (error) {
+      
+    }
+  }
   const onDelete = async() => {
     const ok = confirm("Are you sure to delete this tweet?");
     if(!ok) return;
@@ -65,9 +118,11 @@ export default function Tweet({username, image, tweet, userId, id}:ITweet){
   return (
     <Wrapper>
     <Column>
-      <Username>{username}</Username>
-      <Payload>{tweet}</Payload>
+      {!editing && <Username>{username}</Username>}
+      {editing ? <Form><EditText onChange={onChange} value={text}></EditText></Form> : <Payload>{tweet}</Payload>}
       {user?.uid === userId ? <DeleteButton onClick={onDelete}>delete</DeleteButton> : null}
+      {user?.uid === userId ? <EditButton onClick={onEdit}>edit</EditButton> : null}
+      {editing && <ConfirmButton onClick={onConfirm}>Confirm</ConfirmButton> }
     </Column>
     {image ? (
       <Column>
