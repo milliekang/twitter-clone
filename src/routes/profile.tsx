@@ -46,12 +46,28 @@ flex-direction: column;
 gap: 10px;
 `;
 
+const NameEditButton = styled.div`
+background-color: blueviolet;
+color: white;
+font-weight: 600;
+font-size: 12px;
+padding: 5px 10px;
+text-transform: uppercase;
+border-radius: 5px;
+box-shadow: none;
+border: none;
+`;
+
+const NameInput = styled.input``;
+
 const Name = styled.span``;
 
 export default function Profile(){
   const user = auth.currentUser;
+  const [newName, setNewName] = useState(user?.displayName)
   const [avatar, setAvatar] = useState(user?.photoURL);
   const [tweets, setTweets] = useState<ITweet[]>([]);
+  const [isEditing, setIsEditing] = useState(false);
   const onAvatarChange =  async (e:React.ChangeEvent<HTMLInputElement>) => {
     const {files} = e.target;
     if(!user) return;
@@ -66,6 +82,22 @@ export default function Profile(){
         photoURL:avatarUrl
       })
     }
+  }
+
+  const onEdit = async () => {
+    if(user && user.displayName){
+      if(isEditing){
+        await updateProfile(user, {
+          displayName: newName
+        })
+      }
+    }
+
+    setIsEditing(!isEditing);
+  }
+
+  const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setNewName(e.target.value);
   }
 
   const fetchTweets = async () => {
@@ -102,7 +134,9 @@ export default function Profile(){
 }
     </AvatarUpload>
     <AvatarInput onChange={onAvatarChange} id="avatar" type="file" accept="image/*" />
-    <Name>{user?.displayName ?? "Anonymous"}</Name>
+    {isEditing ? <NameInput onChange={onChange} value={newName} /> : <Name>{user?.displayName ?? "Anonymous"}</Name> }
+    
+    <NameEditButton onClick={onEdit}>{isEditing ? "confirm" : "edit"}</NameEditButton>
     <Tweets>
         {tweets.map((tweet) => (
           <Tweet key={tweet.id} {...tweet} />
