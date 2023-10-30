@@ -64,8 +64,8 @@ const Name = styled.span``;
 
 export default function Profile(){
   const user = auth.currentUser;
-  const [newName, setNewName] = useState(user?.displayName)
-  const [avatar, setAvatar] = useState(user?.photoURL);
+  const [newName, setNewName] = useState(user?.displayName || "")
+  const [avatar, setAvatar] = useState(user?.photoURL || "");
   const [tweets, setTweets] = useState<ITweet[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const onAvatarChange =  async (e:React.ChangeEvent<HTMLInputElement>) => {

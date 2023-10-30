@@ -86,18 +86,6 @@ const PhotoEdit = styled.input`
 display: none;
 `;
 
-const EditPhoto = styled.button`
-color: white;
-font-weight: 600;
-font-size: 12px;
-padding: 5px 10px;
-text-transform: uppercase;
-border-radius: 5px;
-box-shadow: none;
-border: none;
-`;
-
-
 const Form = styled.form``;
 
 

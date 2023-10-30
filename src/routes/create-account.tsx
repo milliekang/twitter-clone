@@ -8,12 +8,6 @@ import GithubButton from "../components/github_button";
 
 
 
-const errorMessage = {
-  "auth/email-already-in-use" : "This email is already in use",
-  "auth/weak-password" : "Password is too weak"
-}
-
-
 export default function CreateAccount(){
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
