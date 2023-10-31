@@ -46,6 +46,7 @@ border: none;
 `;
 
 const EditButton = styled.button`
+margin: 0 5px;
 background-color: blueviolet;
 color: white;
 font-weight: 600;
